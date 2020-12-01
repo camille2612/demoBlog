@@ -19,29 +19,62 @@
           
             <div class="collapse navbar-collapse" id="navbarsExample04">
               <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="{{path('security_registration')}} ">Créer vôtre compte <span class="sr-only">(current)</span></a>
-                </li>
+
+                {% if not app.user%}
+
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{path('security_login')}} ">Identifiez-vous</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{path('security_registration')}} ">Créer votre compte </span></a>
+                  </li>
+
+                {% endif %}
+            
                 <li class="nav-item active">
-                  <a class="nav-link" href="{{path('blog')}} ">Blog <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{{path('blog')}} ">Blog</a>
                 </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="{{path('blog_create')}} ">Ajouter un article <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catégories</a>
-                  <div class="dropdown-menu" aria-labelledby="dropdown04">
-                    <a class="dropdown-item" href="#">Fantastique</a>
-                    <a class="dropdown-item" href="#">Science-Fiction</a>
-                    <a class="dropdown-item" href="#">Autre</a>
-                  </div>
-                </li>
+
+                {% if app.user %}
+
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{path('blog_create')}} ">Ajouter un article</a>
+                  </li>
+
+                {% endif %}
+
+                {% if is_granted('ROLE_ADMIN') %}
+                  
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">BACK OFFICE</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown04">
+                      <a class="dropdown-item" href="{{ path('admin') }}">Acceuil BACK OFFICE</a>
+                      <a class="dropdown-item" href="#">Gestion des articles</a>
+                      <a class="dropdown-item" href="#">Gestion des membres</a>
+                      <a class="dropdown-item" href="#">Gestion des commentaires</a>
+                      <a class="dropdown-item" href="#">Gestion des catégories</a>
+                    </div>
+                  </li>
+
+                {% endif %}
+
+                {% if app.user %}
+
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{{path('security_logout')}} ">Déconnexion</a>
+                  </li>
+
+                {% endif %}
+
               </ul>
+
               <form class="form-inline my-2 my-md-0">
                 <input class="form-control" type="text" placeholder="Search">
               </form>
             </div>
           </nav>
+
+          {# {{ dump(app.user) }} #}
 
           <div class="container mon-conteneur">
             {% block body %}
@@ -51,7 +84,7 @@
         </div>
 
         <footer class="bg-dark text-center text-white p-4">
-            &copy; 2020 - DC - Mon site !!!
+            &copy; 2020 - DC - DemoBlog !!!
         </footer>
 
         {% block javascripts %}
